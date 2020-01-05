@@ -3,76 +3,40 @@
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 records="$scriptDir/records.txt"
 
+# color and formatting constants
+red="\033[0;31m"; green="\033[0;32m"; yellow="\033[0;33m"; blue="\033[0;34m"; magenta="\033[0;35m"; purple="\033[0;36m"; white="\033[0;37m"; grey_light="\033[0;38m"; grey="\033[0;39m"; red_light="\033[1;31m"; green_light="\033[1;32m"; yellow_light="\033[1;33m"; blue_light="\033[1;34m"; magenta_light="\033[1;35m"; purple_light="\033[1;36m";
+blank="\033[m"; blank2='\033[0m'; bold='\033[1m'; low_intensity='\033[2m'; underline='\033[4m';
+
+record () {
+		name=$1[@];
+		comp=("${!name}");
+		name="${comp[0]}";	desc="${comp[2]}";
+		 etc="${comp[3]}";	vname="${comp[1]}";
+		# echo "$name|$vname|$desc|$etc";
+		echo -e "$red$name$blank: $desc";
+		# if [ ! -z "$etc" ]; then { echo -e "$low_intensity$etc"; }; fi
+		printf "$yellow";
+		read $vname;
+		echo -e "$blank";
+
+		echo "$name" >> $records;
+		eval "echo \$$vname" >> $records;
+		echo >> $records;
+}
+
+adv=(Adversity adversity "What was the thing that happened to cause the belief?" "");
+bel=(Beliefs beliefs "What are the thoughts that stemmed from this adversity?" "");
+con=(Consequences consequences "What did you do or feel in reaction to these beliefs?" "");
+evi=(Evidence evidence "What evidence do you have to discredit your beliefs?" "For example if you believe that you’ve completely ruined your diet by eating some cake, you might recognise that actually you’ve only gone over your calorie allowance by a small amount, and it’s the first time in two weeks.");
+alt=(Alternatives alternatives "Things don’t tend to have just a single cause. When you encounter adversity, explore different possible causes for it." 'For example if you do badly on a test, what are the possible causes? Were you tired? Did you perhaps not put enough time into preparation?\nFocus on the possible explanations which are changeable (I didn’t spend enough time preparing), specific (this particular exam was difficult), and non personal (the professor marked it unfairly) causes.');
+imp=(Implications implications "Suppose that your belief is true." "For example, if your boss frowns at you, perhaps you have in fact done something to make them angry, but even if that’s the case then is it the end of the world?\nJust because you have made someone angry, it doesn’t mean that you are a bad person or a failure. Ask yourself what the adversity really implies, then again look for the evidence. You may have made your boss angry today, but it’s the first time in four months of working here, you’re usually a great employee.");
+use=(Usefulness usefulness "Whether or not the belief is accurate, is it useful to hold it in your mind? What do you accomplish by ruminating on it?" "If it is more useful to move on with your day than to think about this right now, then consider parking the thought and returning to it at a later, specific time. You might find that simply committing to this will remove the thought from your mind and you will forget about it.\nSome alternative approaches might be to distract yourself with a physical sensation such as a pinch to the arm, or write the thought on a note to ventilate the thought. Finally, you might detail all the ways you can change the situation in the future.");
+records=(adv bel con evi alt imp use);
+
 takeRecord () {
-    echo Adversity: What was the thing that happened to cause the belief?
-    echo ----------
-    read adversity
-    echo
-
-    echo Beliefs: What are the thoughts that stemmed from this adversity?
-    echo ----------
-    read beliefs
-    echo
-
-    echo Consequences: What did you do or feel in reaction to these beliefs?
-    echo ----------
-    read consequences
-    echo
-
-    echo Evidence: What evidence do you have to discredit your beliefs? 
-    echo For example if you believe that you’ve completely ruined your diet by eating some cake, you might recognise that actually you’ve only gone over your calorie allowance by a small amount, and it’s the first time in two weeks. 
-    echo ----------
-    read evidence
-    echo
-
-    echo Alternatives: Things don’t tend to have just a single cause. When you encounter adversity, explore different possible causes for it. 
-    echo For example if you do badly on a test, what are the possible causes? Were you tired? Did you perhaps not put enough time into preparation? 
-    echo Focus on the possible explanations which are changeable \(I didn’t spend enough time preparing\), specific \(this particular exam was difficult\), and non personal \(the professor marked it unfairly\) causes.
-    echo ----------
-    read alternatives
-    echo
-
-    echo Implications: 
-    echo Suppose that your belief is true. For example, if your boss frowns at you, perhaps you have in fact done something to make them angry, but even if that’s the case then is it the end of the world? 
-    echo Just because you have made someone angry, it doesn’t mean that you are a bad person or a failure. Ask yourself what the adversity really implies, then again look for the evidence. You may have made your boss angry today, but it’s the first time in four months of working here, you’re usually a great employee.
-    echo ----------
-    read implications
-    echo
-
-    echo Usefulness: Whether or not the belief is accurate, is it useful to hold it in your mind? What do you accomplish by ruminating on it? 
-    echo If it is more useful to move on with your day than to think about this right now, then consider parking the thought and returning to it at a later, specific time. You might find that simply committing to this will remove the thought from your mind and you will forget about it. 
-    echo Some alternative approaches might be to distract yourself with a physical sensation such as a pinch to the arm, or write the thought on a note to ventilate the thought. Finally, you might detail all the ways you can change the situation in the future. 
-    echo ----------
-    read usefulness
-    echo
-
-    echo Adversity >> $records
-    echo $adversity >> $records
-    echo >> $records
-
-    echo Beliefs >> $records
-    echo $adversity >> $records
-    echo >> $records
-
-    echo Consequences >> $records
-    echo $consequences >> $records
-    echo >> $records
-
-    echo Evidence >> $records
-    echo $evidence >> $records
-    echo >> $records
-
-    echo Alternatives >> $records
-    echo $alternatives >> $records
-    echo >> $records
-    
-    echo Implications >> $records
-    echo $implications >> $records
-    echo >> $records
-
-    echo Usefulness >> $records
-    echo $usefulness >> $records
-    echo >> $records
+	for r in ${records[@]}; do {
+		record $r;
+	}; done
     echo --------------------------------------------------------------------------------------------------------------- >> $records
     echo >> $records
 }
