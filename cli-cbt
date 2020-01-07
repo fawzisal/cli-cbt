@@ -1,6 +1,7 @@
 #!/bin/bash
 
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+echo $scriptDir
 records="$scriptDir/records.txt"
 
 # color and formatting constants
@@ -14,7 +15,7 @@ record () {
 		 etc="${comp[3]}";	vname="${comp[1]}";
 		# echo "$name|$vname|$desc|$etc";
 		echo -e "$red$name$blank: $desc";
-		# if [ ! -z "$etc" ]; then { echo -e "$low_intensity$etc"; }; fi
+		if [ ! -z "$etc" ]; then { echo -e "$low_intensity$etc"; }; fi
 		printf "$yellow";
 		read $vname;
 		echo -e "$blank";
@@ -24,17 +25,28 @@ record () {
 		echo >> $records;
 }
 
-adv=(Adversity adversity "What was the thing that happened to cause the belief?" "");
-bel=(Beliefs beliefs "What are the thoughts that stemmed from this adversity?" "");
-con=(Consequences consequences "What did you do or feel in reaction to these beliefs?" "");
-evi=(Evidence evidence "What evidence do you have to discredit your beliefs?" "For example if you believe that you’ve completely ruined your diet by eating some cake, you might recognise that actually you’ve only gone over your calorie allowance by a small amount, and it’s the first time in two weeks.");
-alt=(Alternatives alternatives "Things don’t tend to have just a single cause. When you encounter adversity, explore different possible causes for it." 'For example if you do badly on a test, what are the possible causes? Were you tired? Did you perhaps not put enough time into preparation?\nFocus on the possible explanations which are changeable (I didn’t spend enough time preparing), specific (this particular exam was difficult), and non personal (the professor marked it unfairly) causes.');
-imp=(Implications implications "Suppose that your belief is true." "For example, if your boss frowns at you, perhaps you have in fact done something to make them angry, but even if that’s the case then is it the end of the world?\nJust because you have made someone angry, it doesn’t mean that you are a bad person or a failure. Ask yourself what the adversity really implies, then again look for the evidence. You may have made your boss angry today, but it’s the first time in four months of working here, you’re usually a great employee.");
-use=(Usefulness usefulness "Whether or not the belief is accurate, is it useful to hold it in your mind? What do you accomplish by ruminating on it?" "If it is more useful to move on with your day than to think about this right now, then consider parking the thought and returning to it at a later, specific time. You might find that simply committing to this will remove the thought from your mind and you will forget about it.\nSome alternative approaches might be to distract yourself with a physical sensation such as a pinch to the arm, or write the thought on a note to ventilate the thought. Finally, you might detail all the ways you can change the situation in the future.");
-records=(adv bel con evi alt imp use);
+# adv=(Adversity adversity "What was the thing that happened to cause the belief?" "");
+# bel=(Beliefs beliefs "What are the thoughts that stemmed from this adversity?" "");
+# con=(Consequences consequences "What did you do or feel in reaction to these beliefs?" "");
+# evi=(Evidence evidence "What evidence do you have to discredit your beliefs?" "For example if you believe that you’ve completely ruined your diet by eating some cake, you might recognise that actually you’ve only gone over your calorie allowance by a small amount, and it’s the first time in two weeks.");
+# alt=(Alternatives alternatives "Things don’t tend to have just a single cause. When you encounter adversity, explore different possible causes for it." 'For example if you do badly on a test, what are the possible causes? Were you tired? Did you perhaps not put enough time into preparation?\nFocus on the possible explanations which are changeable (I didn’t spend enough time preparing), specific (this particular exam was difficult), and non personal (the professor marked it unfairly) causes.');
+# imp=(Implications implications "Suppose that your belief is true." "For example, if your boss frowns at you, perhaps you have in fact done something to make them angry, but even if that’s the case then is it the end of the world?\nJust because you have made someone angry, it doesn’t mean that you are a bad person or a failure. Ask yourself what the adversity really implies, then again look for the evidence. You may have made your boss angry today, but it’s the first time in four months of working here, you’re usually a great employee.");
+# use=(Usefulness usefulness "Whether or not the belief is accurate, is it useful to hold it in your mind? What do you accomplish by ruminating on it?" "If it is more useful to move on with your day than to think about this right now, then consider parking the thought and returning to it at a later, specific time. You might find that simply committing to this will remove the thought from your mind and you will forget about it.\nSome alternative approaches might be to distract yourself with a physical sensation such as a pinch to the arm, or write the thought on a note to ventilate the thought. Finally, you might detail all the ways you can change the situation in the future.");
+# comps=(adv bel con evi alt imp use);
+
+
+sit=("The Situation" situation "What happened? Where? When? Who with? How?" "");
+anx=("Anxiety" anxiety "How would you rate your anxiety? (1-100)");
+aut=("Automatic Thoughts" auto_thoughts "What went through my mind? What disturbed me?" "What did those thoughts/images/memories mean to me, or say about me or the situation? What am I responding to? What ‘button’ is this pressing for me? What would be the worst thing about that, or that could happen?");
+err=("Thinking Errors" thinking_errors "Are there any thinking errors in these thoughts?" "errors: 1. All-or-Nothing Thinking | 2. Overgeneralization | 3. Mental Filter | 4. Disqualifying the Positive | 5. Jumping to Conclusions | 6. Mind Reading | 7. The Fortune-Teller Error | 8. Magnification/Minimization | 9. Catastrophizing | 10. Emotional Reasoning | 11. “Should” Statements | 12. Labeling and mislabeling | 13. Personalization | 14. Externalization");
+cha=("Challenge" challenge "How can you challege the above thinking errors?" "");
+bal=("Balanced Thoughts" balanced_thoughts "How can you rephrase these thoughts to be more balanced.");
+anx2=("Anxiety after" anxiety2 "How would you rate your anxiety? (1-100)");
+comps=(sit anx aut err cha bal anx);
+
 
 takeRecord () {
-	for r in ${records[@]}; do {
+	for r in ${comps[@]}; do {
 		record $r;
 	}; done
     echo --------------------------------------------------------------------------------------------------------------- >> $records
